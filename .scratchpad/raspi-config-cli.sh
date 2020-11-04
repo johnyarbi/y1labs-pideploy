@@ -19,22 +19,22 @@ fi
 # Set hostname based on unique ID
 sudo raspi-config nonint do_hostname rpi-$THIS_UNIQUE_ID
 
-# Set password for pi user based on unique ID as base64 encoded
+# Set password for pi user based on unique ID as base64 encoded (https://www.bing.com/search?q=base64+encode)
 THIS_PASSWORD=$(echo -n $THIS_MAC_ADDRESS | base64)
 sudo usermod --password $(openssl passwd -1 "$THIS_PASSWORD") pi
 
 # Interfacing options
-#sudo raspi-config nonint do_camera 1
-#sudo raspi-config nonint do_i2c 1
-#sudo raspi-config nonint do_onewire 1
-#sudo raspi-config nonint do_rgpio 1
-#sudo raspi-config nonint do_spi 1
-#sudo raspi-config nonint do_ssh 1
-#sudo raspi-config nonint do_vnc 0
+sudo raspi-config nonint do_camera 0
+sudo raspi-config nonint do_i2c 0
+sudo raspi-config nonint do_onewire 0
+sudo raspi-config nonint do_rgpio 0
+sudo raspi-config nonint do_spi 0
+sudo raspi-config nonint do_ssh 0
+sudo raspi-config nonint do_vnc 1
 
 # Interfacing options (serial)
-sudo raspi-config nonint do_serial 0    # disable first
-sudo raspi-config nonint do_serial 2    # enable serial port but not for console access
+sudo raspi-config nonint do_serial 0    # enable all first
+sudo raspi-config nonint do_serial 2    # enable serial interface but not shell login
 
 # International locale settings
 sudo raspi-config nonint do_change_locale en_US.UTF-8
