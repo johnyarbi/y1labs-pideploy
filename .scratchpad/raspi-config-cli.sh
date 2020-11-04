@@ -6,12 +6,14 @@
 # Set preferred NIC to use for generating unique ID's (typically wlan0 or eth0)
 MY_NIC1=wlan0
 MY_NIC2=eth0
-THIS_UNIQUE_ID=XXXXXX               # Default to XXXXXX in case the NIC doesn't exist
 THIS_MAC_ADDRESS=XX:XX:XX:XX:XX:XX     # Default to XX:XX:XX:XX:XX:XX in case the NIC doesn't exist
+THIS_UNIQUE_ID=XXXXXX               # Default to XXXXXX in case the NIC doesn't exist
 if [ -e /sys/class/net/$MY_NIC1/address ]; then
-    THIS_UNIQUE_ID=$(cat /sys/class/net/$MY_NIC1/address | cut -d ':' -f 4- --output-delimiter '')
+    THIS_MAC_ADDRESS=$(cat /sys/class/net/$MY_NIC1/address)
+    THIS_UNIQUE_ID=$(echo -n $THIS_MAC_ADDRESS | cut -d ':' -f 4- --output-delimiter '')
 elif [ -e /sys/class/net/$MY_NIC2/address ]; then
-    THIS_UNIQUE_ID=$(cat /sys/class/net/$MY_NIC2/address | cut -d ':' -f 4- --output-delimiter '')
+    THIS_MAC_ADDRESS=$(cat /sys/class/net/$MY_NIC2/address)
+    THIS_UNIQUE_ID=$(echo -n $THIS_MAC_ADDRESS | cut -d ':' -f 4- --output-delimiter '')
 fi
 
 # Set hostname based on unique ID
@@ -22,13 +24,13 @@ THIS_PASSWORD=$(echo -n $THIS_MAC_ADDRESS | base64)
 sudo usermod --password $(openssl passwd -1 "$THIS_PASSWORD") pi
 
 # Interfacing options
-sudo raspi-config nonint do_camera 1
-sudo raspi-config nonint do_i2c 1
-sudo raspi-config nonint do_onewire 1
-sudo raspi-config nonint do_rgpio 1
-sudo raspi-config nonint do_spi 1
-sudo raspi-config nonint do_ssh 1
-sudo raspi-config nonint do_vnc 0
+#sudo raspi-config nonint do_camera 1
+#sudo raspi-config nonint do_i2c 1
+#sudo raspi-config nonint do_onewire 1
+#sudo raspi-config nonint do_rgpio 1
+#sudo raspi-config nonint do_spi 1
+#sudo raspi-config nonint do_ssh 1
+#sudo raspi-config nonint do_vnc 0
 
 # Interfacing options (serial)
 sudo raspi-config nonint do_serial 0    # disable first
